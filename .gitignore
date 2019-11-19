@@ -1,0 +1,12 @@
+*.fastq
+Fusion_COI_combi_MiSeq_Run2019_25.csv
+Fusion_COI_combi_MiSeq_Run2019_25.xlsx
+input1.tsv
+input1sorted.tsv
+input2.tsv
+input2sorted.tsv
+input2.tsv
+joined.tsv
+sample_sheet_script.py
+samplesheet.txt
+

@@ -14,7 +14,7 @@ import argparse, sys
 parser = argparse.ArgumentParser()
 parser.add_argument("ModifiedSampleSheetCsv", help="Give the name of the corrected sheet (as csv) as the arg value, e.g. python create_input1_file.py Fusion_COI_combi_MiSeq_Run2019_25.csv")
 args = parser.parse_args()
-print(args.ModifiedSampleSheetCsv)
+#print(args.ModifiedSampleSheetCsv)
 
 
 # Define a function for reverse-complementing.
