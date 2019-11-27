@@ -11,7 +11,7 @@
 
 import argparse, sys
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description='Transform 3-column sample sheet into first input for samplesheet.txt.')
 parser.add_argument("ModifiedSampleSheetCsv", help="Give the name of the corrected sheet (as csv) as the arg value, e.g. python create_input1_file.py Fusion_COI_combi_MiSeq_Run2019_25.csv")
 args = parser.parse_args()
 #print(args.ModifiedSampleSheetCsv)
@@ -25,7 +25,8 @@ def revcomp(seq):
 import csv
 
 with open(sys.argv[1], 'r') as csvfile:
-    fieldnames = ['Sample_name', 'Fusion_COI_i5_TAG_Primer', 'Fusion_COI_i7_TAG_Primer']
+#    fieldnames = ['Sample_name', 'Fusion_COI_i5_TAG_Primer', 'Fusion_COI_i7_TAG_Primer']
+    fieldnames = ['Sample_name', 'i5_TAG_Primer', 'i7_TAG_Primer']
     reader = csv.DictReader(csvfile, delimiter=',')
     for row in reader:
         r_rc = revcomp(row['Fusion_COI_i7_TAG_Primer'])
