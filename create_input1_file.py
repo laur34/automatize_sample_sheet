@@ -12,10 +12,10 @@
 import argparse, sys
 
 parser = argparse.ArgumentParser(description='Transform 3-column sample sheet into first input for samplesheet.txt.')
-parser.add_argument('ModifiedSampleSheetCsv', help="Give the name of the modified sheet from lab (as csv, not tab-separated).")
-parser.add_argument('Sample_name', help="Name of the first column (sample names)")
-parser.add_argument('i5_TAG_Primer', help="Name of the second column (fwd primers)")
-parser.add_argument('i7_TAG_Primer', help="Name of the third column (reverse primers)")
+parser.add_argument('ModifiedSampleSheetCsv_name', nargs=1, help="Give the name of the modified sheet from lab (as csv, not tab-separated).")
+parser.add_argument('Sample_name_colname', nargs='?', default="Sample_name", help="Name of the first column (sample names)")
+parser.add_argument('i5_TAG_Primer_colname', nargs='?', default="Fusion_COI_i5_TAG_Primer", help="Name of the second column (fwd primers)")
+parser.add_argument('i7_TAG_Primer_colname', nargs='?', default="Fusion_COI_i7_TAG_Primer", help="Name of the third column (reverse primers)")
 
 args = parser.parse_args()
 #print(args.accumulate())
@@ -30,11 +30,12 @@ import csv
 
 with open(sys.argv[1], 'r') as csvfile:
 #    fieldnames = ['Sample_name', 'Fusion_COI_i5_TAG_Primer', 'Fusion_COI_i7_TAG_Primer']
-    fieldnames = [sys.argv[2], sys.argv[3], sys.argv[4]]
+#    fieldnames = [sys.argv[2], sys.argv[3], sys.argv[4]]
     reader = csv.DictReader(csvfile, delimiter=',')
     for row in reader:
-        r_rc = revcomp(row[sys.argv[4]])
-        samplename = row[sys.argv[2]]
+#        r_rc = revcomp(row[sys.argv[4]])
+        r_rc = revcomp(row[args.i7_TAG_Primer_colname])
+        samplename = row[args.Sample_name_colname]
         corename = samplename.replace("_", "-")
-        print(corename + "\t" + row[sys.argv[2]] + "\t" + row[sys.argv[3]] + "\t" + r_rc, file=open("input1.tsv","a"))
+        print(corename + "\t" + row[args.Sample_name_colname] + "\t" + row[args.i5_TAG_Primer_colname] + "\t" + r_rc, file=open("input1.tsv","a"))
 
