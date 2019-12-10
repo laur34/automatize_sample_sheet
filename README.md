@@ -7,7 +7,7 @@ But it only works if you have fusion primers and paired-end merging.
 
 In a directory with the sample sheet from the lab, which you have modified according to comments in create_input1_file.py, and the appropriate raw .fastq files, 
 
-1. First, run create_input1_file.py (must use Python3).
+1. First, run create_input1_file.py, with name of 3-column sample sheet you made (must use Python3).
 2. Next, run create_input2_file.py (must use Python3).
 3. Then, run joining.sh.
 
