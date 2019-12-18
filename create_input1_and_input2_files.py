@@ -67,7 +67,9 @@ for filename in filenames.split('\n'):
     print(filename.split('_')[0] + "\t" + filename, file=open("input2.tsv","a"))
 
 
-print("File input2_file.py successfully created.")
+#print("File input2_file.py successfully created.")
+print("File input2.tsv successfully created.")
 print("")
 
 f.close()
+
