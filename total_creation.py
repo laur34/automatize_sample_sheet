@@ -1,5 +1,5 @@
 # Script to automate creation samplesheet.txt file for use with vsearch script for fusion primers and paired-ends.
-# Last update: 13.1.2020 LH
+# Last update: 17.1.2020 LH
 # Needs to be run in Python3.
 
 # Before using this script, the sample sheet from the lab must be made into the correct input.
@@ -36,10 +36,23 @@ import csv
 with open(sys.argv[1], 'r') as csvfile:
     reader = csv.DictReader(csvfile, delimiter=',')
     for row in reader:
-        r_rc = revcomp(row[args.i7_TAG_Primer_colname])
-        samplename = row[args.Sample_name_colname]
-        corename = samplename.replace("_", "-")
-        print(corename + "\t" + row[args.Sample_name_colname] + "\t" + row[args.i5_TAG_Primer_colname] + "\t" + r_rc, file=open("input1.tsv","a"))
+        try:
+            r_rc = revcomp(row[args.i7_TAG_Primer_colname])
+        except KeyError as err:
+            print(err, "\n" + "Third column is not named Fusion_COI_i7_TAG_Primer. Please rename it, or specify current name as ARGV4.")
+            sys.exit()
+        try:
+            samplename = row[args.Sample_name_colname]
+            corename = samplename.replace("_", "-")
+        except KeyError as err:
+            print(err, "\n" + "First column is not named Sample_name. Please rename it, or specify current name as ARGV2.")
+            sys.exit()
+        try:
+            print(corename + "\t" + row[args.Sample_name_colname] + "\t" + row[args.i5_TAG_Primer_colname] + "\t" + r_rc, file=open("input1.tsv","a"))
+        except KeyError as err:
+            print(err, "\n" + "Second column is not named Fusion_COI_i5_TAG_Primer. Please rename it, or specify current name as ARGV3.")
+            sys.exit()
+
 
 # Check the generated file to see if underscores are in corenames (they shouldn't be).
 with open('input1.tsv', 'r') as csvfile:
@@ -59,15 +72,14 @@ with open('input1.tsv', 'r') as csvfile:
 # Create input2
 if os.path.isfile('./input2.tsv'):
     warnings.warn('input2 file already exists! Appending to existing file. If you do not want this, delete input2.tsv and run this script again.')
-#TODO: maybe implement a try catch if fastq files are not found in directory.
+
 f = os.popen("ls *_R1_001.fastq")
 filenames = f.read()
 
-for filename in filenames.split('\n'):
+for filename in filenames.rstrip().split('\n'):
     print(filename.split('_')[0] + "\t" + filename, file=open("input2.tsv","a"))
 
 
-#print("File input2_file.py successfully created.")
 print("File input2.tsv successfully created.")
 print("")
 
