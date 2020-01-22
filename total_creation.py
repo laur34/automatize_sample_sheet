@@ -19,7 +19,6 @@ parser.add_argument('i7_TAG_Primer_colname', nargs='?', default="Fusion_COI_i7_T
 
 args = parser.parse_args()
 
-
 # Define a function for reverse-complementing.
 def revcomp(seq):
     return seq.translate(str.maketrans('ACGTacgtRYMKrymkVBHDvbhd', 'TGCAtgcaYRKMyrkmBVDHbvdh'))[::-1]
@@ -65,25 +64,40 @@ with open('input1.tsv', 'r') as csvfile:
             warnings.warn('Underscores in core fastq names! You may want to change these before proceeding further.')
     if usc == 0:
         print("")
-        print("File input1_file.py successfully created.")
+        print("File input1.tsv successfully created.")
         print("")
+
+
+# Check if fastq files are in directory and there is the same number of them as sample sheet says.
+import glob
+fastqfiles = glob.glob("*_R1_001.fastq")
+
+count = len(open('input1.tsv', 'r').readlines())
+if count == len(fastqfiles):
+    print("Fastq files found.")
+    print("")
+else:
+    print("Number of forward fastq files in directory differs from number listed in input sample sheet!")
+    print("Exiting")
+    sys.exit()    
 
 
 # Create input2
 if os.path.isfile('./input2.tsv'):
     warnings.warn('input2 file already exists! Appending to existing file. If you do not want this, delete input2.tsv and run this script again.')
 
-f = os.popen("ls *_R1_001.fastq")
-filenames = f.read()
 
-for filename in filenames.rstrip().split('\n'):
-    print(filename.split('_')[0] + "\t" + filename, file=open("input2.tsv","a"))
+f2 = open('input2.tsv', 'w')
+for fastqfile in fastqfiles:
+    corename = fastqfile.split('_')[0]
+    f2.write("{}\t".format(corename))
+    f2.write("{}\n".format(fastqfile))
 
+f2.close()
 
 print("File input2.tsv successfully created.")
 print("")
 
-f.close()
 
 # Incorporating bash commands from joining.sh script.
 # Using the shell way for now--this script is for local use only.
@@ -112,5 +126,6 @@ with open('samplesheet.tsv', 'rt') as spltsv:
             spltxt.write(line.replace('L001_R1_001.fastq','L001_merged.fq'))
 
 print("File samplesheet.txt successfully created.")
+print("")
 print("Finished.")
 #TODO: delete intermediate files.
