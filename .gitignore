@@ -1,5 +1,5 @@
 *.fastq
-Fusion_COI_combi_MiSeq_Run2019_25.csv
+#Fusion_COI_combi_MiSeq_Run2019_25.csv
 Fusion_COI_combi_MiSeq_Run2019_25.xlsx
 input1.tsv
 input1sorted.tsv
