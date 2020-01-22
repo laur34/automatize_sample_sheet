@@ -3,7 +3,7 @@
 # Needs to be run in Python3.
 
 # Before using this script, the sample sheet from the lab must be made into the correct input.
-# That is, 1st col is Sample_name, 2nd is Fusion_COI_i5_TAG_Primer, 3rd is Fusion_COI_i7_Primer.
+# That is, 1st col is Sample_name, 2nd is Fusion_COI_i5_TAG_Primer, 3rd is Fusion_COI_i7_TAG_Primer.
 # Everything else (other columns, and rows not in project) should be deleted from it.
 
 # Give the name of the corrected sheet (as csv) as the arg value.
