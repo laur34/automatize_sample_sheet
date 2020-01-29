@@ -1,6 +1,6 @@
 # Script to automate creation samplesheet.txt file for use with vsearch script for fusion primers and paired-ends.
-# This is a new version. It is modular.
-# Last update: 28.1.2020 LH
+# This is a new version, with functions.
+# Last update: 29.1.2020 LH
 # Needs to be run in Python3.
 
 # Before using this script, the sample sheet from the lab must be made into the correct input.
@@ -53,8 +53,8 @@ def createInput1file(splsht3col):
 
 
 # Define fcn to check the generated file to see if underscores are in corenames (they shouldn't be).
-def checkCorenamesForUsc(i1):
-    with open(i1, 'r') as csvfile:
+def checkCorenamesForUsc():
+    with open('input1.tsv', 'r') as csvfile:
         reader = csv.reader(csvfile, delimiter='\t')
         usc = 0
         for row in reader:
@@ -70,9 +70,9 @@ def checkCorenamesForUsc(i1):
 
 
 # Define fcn to check if fastq files are in directory and there is the same number of them as sample sheet says.
-def CheckForFwdFastqs(i1):
+def CheckForFwdFastqs():
     fastqfiles = glob.glob("*_R1_001.fastq")
-    count = len(open(i1, 'r').readlines())
+    count = len(open('input1.tsv', 'r').readlines())
     if count == len(fastqfiles):
         print("Fastq files found.")
         print("")
@@ -83,11 +83,11 @@ def CheckForFwdFastqs(i1):
 
 
 # Define fcn to create input2 file.
-def createInput2file(i2):
+def createInput2file():
     if os.path.isfile('./input2.tsv'):
         warnings.warn('input2 file already exists! Appending to existing file. If you do not want this, delete input2.tsv and run this script again.')
     fastqfiles = glob.glob("*_R1_001.fastq")
-    f2 = open(i2, 'w')
+    f2 = open('input2.tsv', 'w')
     for fastqfile in fastqfiles:
         corename = fastqfile.split('_')[0]
         f2.write("{}\t".format(corename))
@@ -132,15 +132,27 @@ def replaceEndingsAndWriteFinal():
     print("")
 
 
+def removeIntFiles():
+    print("Removing intermediate files.")
+    print("")
+    process = subprocess.Popen(['rm', 'input1.tsv'])
+    process = subprocess.Popen(['rm', 'input2.tsv'])
+    process = subprocess.Popen(['rm', 'input1sorted.tsv'])
+    process = subprocess.Popen(['rm', 'input2sorted.tsv'])
+    process = subprocess.Popen(['rm', 'joined.tsv'])
+    process = subprocess.Popen(['rm', 'samplesheet.tsv'])
+
+
 
 def main():
     createInput1file(sys.argv[1])
-    checkCorenamesForUsc('input1.tsv')
-    CheckForFwdFastqs('input1.tsv')
-    createInput2file('input2.tsv')
+    checkCorenamesForUsc()
+    CheckForFwdFastqs()
+    createInput2file()
     sortAndJoin()
     cutColumns()
     replaceEndingsAndWriteFinal()
+    removeIntFiles()
     print("Finished.")
 
 
