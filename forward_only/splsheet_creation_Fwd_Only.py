@@ -116,13 +116,13 @@ def sortAndJoin():
 
 # Define a function to cut the joined file, keeping only the wanted columns for samplesheet.
 def cutColumns():
-    if os.path.isfile('./samplesheet.tsv'):
-        warnings.warn('samplesheet.tsv file already exists! Appending to existing file. If you do not want this, delete samplesheet.tsv and run this script again.')
+    if os.path.isfile('./samplesheet.txt'):
+        warnings.warn('samplesheet.txt file already exists! Appending to existing file. If you do not want this, delete samplesheet.tsv and run this script again.')
     for line in open('joined.tsv'):
         col2 = line.rstrip('\n').split()[1]
         col4 = line.rstrip('\n').split()[3]
 #        col5 = line.rstrip('\n').split()[4]
-        print(col2 + "\t" + col4, file=open("samplesheet.tsv","a"))
+        print(col2 + "\t" + col4, file=open("samplesheet.txt","a"))
 
 
 
@@ -156,7 +156,7 @@ def main():
     sortAndJoin()
     cutColumns()
 #    replaceEndingsAndWriteFinal()
-#    removeIntFiles()
+    removeIntFiles()
     print("Finished.")
 
 
