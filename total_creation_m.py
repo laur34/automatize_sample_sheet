@@ -1,6 +1,6 @@
 # Script to automate creation samplesheet.txt file for use with vsearch script for fusion primers and paired-ends.
 # This is a new version, with functions.
-# Last update: 29.1.2020 LH
+# Last update: 17.2.2020 LH - version 2.1
 # Needs to be run in Python3.
 
 # Before using this script, the sample sheet from the lab must be made into the correct input.
@@ -70,14 +70,15 @@ def checkCorenamesForUsc():
 
 
 # Define fcn to check if fastq files are in directory and there is the same number of them as sample sheet says.
-def CheckForFwdFastqs():
+def CheckForFwdFastqs(sheet):
     fastqfiles = glob.glob("*_R1_001.fastq")
-    count = len(open('input1.tsv', 'r').readlines())
+    count = len(open(sheet, 'r').readlines())
     if count == len(fastqfiles):
-        print("Fastq files found.")
+        print("Found same number of forward fastq files in directory as on sheet created.")
         print("")
     else:
-        print("Number of forward fastq files in directory differs from number listed in input sample sheet!")
+        print("Number of forward fastq files in directory differs from number listed on sample sheet!")
+        print("Make sure all files are present, and names match (and no special characters in names).")
         print("Exiting")
         sys.exit()    
 
@@ -147,10 +148,11 @@ def removeIntFiles():
 def main():
     createInput1file(sys.argv[1])
     checkCorenamesForUsc()
-    CheckForFwdFastqs()
+    CheckForFwdFastqs('input1.tsv')
     createInput2file()
     sortAndJoin()
     cutColumns()
+    CheckForFwdFastqs('samplesheet.tsv')
     replaceEndingsAndWriteFinal()
     removeIntFiles()
     print("Finished.")
