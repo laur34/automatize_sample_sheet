@@ -69,6 +69,31 @@ def checkCorenamesForUsc():
 
 
 
+# Define fcn to check if underscores are present in any fastq file names in the directory:
+def checkFASTQnamesForUsc():
+    fwdfq = glob.glob("*_R1_001.fastq")
+    for fastqname in fwdfq:
+        parts = fastqname.split("_")
+        if len(parts) > 5:
+            print("Underscore in fastq file name detected!")
+            print(parts)
+            print("Exiting.")
+            sys.exit()
+    print("Forward FASTQ file names look ok.")
+    print("")
+    revfq = glob.glob("*_R2_001.fastq")
+    for fastqname in revfq:
+        parts = fastqname.split("_")
+        if len(parts) > 5:
+            print("Underscore in fastq file name detected!")
+            print(parts)
+            print("Exiting.")
+            sys.exit()
+    print("Reverse FASTQ file names look ok.")
+    print("")
+
+
+
 # Define fcn to check if fastq files are in directory and there is the same number of them as sample sheet says.
 def CheckForFwdFastqs(sheet):
     fastqfiles = glob.glob("*_R1_001.fastq")
@@ -146,6 +171,7 @@ def removeIntFiles():
 
 
 def main():
+    checkFASTQnamesForUsc()
     createInput1file(sys.argv[1])
     checkCorenamesForUsc()
     CheckForFwdFastqs('input1.tsv')
