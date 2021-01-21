@@ -1,6 +1,6 @@
 # Script to automate creation samplesheet.txt file for use with vsearch script for fusion primers and paired-ends.
 # This is a new version, with functions.
-# Last update: 17.2.2020 LH - version 2.1
+# Last update: 21.1.2021 LH - version 2.2 - added check for _ in fastq file names in directory.
 # Needs to be run in Python3.
 
 # Before using this script, the sample sheet from the lab must be made into the correct input.
