@@ -50,6 +50,7 @@ def createInput1file(splsht3col):
             except KeyError as err:
                 print(err, "\n" + "Second column is not named Fusion_COI_i5_TAG_Primer. Please rename it, or specify current name as ARGV3.")
                 sys.exit()
+    print("File input1.tsv successfully created.")
 
 
 # Define fcn to check the generated file to see if underscores are in corenames (they shouldn't be).
@@ -61,10 +62,10 @@ def checkCorenamesForUsc():
             corename = row[0]
             if "_" in corename:
                 usc = usc + 1
-                warnings.warn('Underscores in core fastq names! You may want to change these before proceeding further.')
+                warnings.warn('Underscores in core fastq names on sheet! You may want to change these before proceeding further.')
         if usc == 0:
             print("")
-            print("File input1.tsv successfully created.")
+            print("File input1.tsv looks ok.")
             print("")
 
 
