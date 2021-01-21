@@ -27,7 +27,32 @@ def revcomp(seq):
     return seq.translate(str.maketrans('ACGTacgtRYMKrymkVBHDvbhd', 'TGCAtgcaYRKMyrkmBVDHbvdh'))[::-1]
 
 
-#TODO: if script exits prematurely, make it delete the intermediate files it created.
+# Implement check for intermediate files, with option to delete thm.
+import subprocess
+prev_run = os.path.isfile("samplesheet.txt") | os.path.isfile("input_1*.tsv") | os.path.isfile("input_2*.tsv") | os.path.isfile("joined.tsv") | os.path.isfile("samplesheet.tsv")
+
+if prev_run:
+    i = input('Intermediate files already exist. Delete them?\n')
+    if i.lower() == 'yes' or i.lower() == 'y':
+        if os.path.isfile("samplesheet.txt"):
+            process = subprocess.Popen(['rm', 'samplesheet.txt'])
+        if os.path.isfile("samplesheet.tsv"):
+            process = subprocess.Popen(['rm', 'samplesheet.tsv'])
+        if os.path.isfile("input1.tsv"):
+            process = subprocess.Popen(['rm', 'input1.tsv'])
+        if os.path.isfile("input2.tsv"):
+            process = subprocess.Popen(['rm', 'input2.tsv'])
+        if os.path.isfile("input1sorted.tsv"):
+            process = subprocess.Popen(['rm', 'input1sorted.tsv'])
+        if os.path.isfile("input2sorted.tsv"):
+            process = subprocess.Popen(['rm', 'input2sorted.tsv'])   
+    else:
+        print("Please delete files from previous attempt, and try again.")
+        sys.exit()
+        
+
+
+#TODO: finish above
 
 # Define function to read in mod sample sheet and create new file (input1) from it, checking first if already exists in dir.
 def createInput1file(splsht3col):
@@ -55,6 +80,7 @@ def createInput1file(splsht3col):
     print("File input1.tsv successfully created.")
 
 
+'''
 # Define fcn to check the generated file to see if underscores are in corenames (they shouldn't be).
 def checkCorenamesForUsc():
     with open('input1.tsv', 'r') as csvfile:
@@ -69,7 +95,7 @@ def checkCorenamesForUsc():
             print("")
             print("File input1.tsv looks ok.")
             print("")
-
+'''
 
 
 # Define fcn to check if underscores are present in any fastq file names in the directory:
@@ -128,7 +154,7 @@ def createInput2file():
 
 # Incorporating bash commands from joining.sh script.
 # Using the shell way for now--this script is for local use only.
-import subprocess
+
 
 # Define a function to sort the two input files, and then join them into a new file.
 def sortAndJoin():
