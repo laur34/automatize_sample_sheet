@@ -27,6 +27,8 @@ def revcomp(seq):
     return seq.translate(str.maketrans('ACGTacgtRYMKrymkVBHDvbhd', 'TGCAtgcaYRKMyrkmBVDHbvdh'))[::-1]
 
 
+#TODO: if script exits prematurely, make it delete the intermediate files it created.
+
 # Define function to read in mod sample sheet and create new file (input1) from it, checking first if already exists in dir.
 def createInput1file(splsht3col):
     if os.path.isfile('./input1.tsv'):
@@ -100,7 +102,7 @@ def CheckForFwdFastqs(sheet):
     fastqfiles = glob.glob("*_R1_001.fastq")
     count = len(open(sheet, 'r').readlines())
     if count == len(fastqfiles):
-        print("Found same number of forward fastq files in directory as on sheet created.")
+        print("Number of forward fastq files in directory matches number of lines to be written.")
         print("")
     else:
         print("Number of forward fastq files in directory differs from number listed on sample sheet!")
@@ -174,8 +176,8 @@ def removeIntFiles():
 def main():
     checkFASTQnamesForUsc()
     createInput1file(sys.argv[1])
-    checkCorenamesForUsc()
-    CheckForFwdFastqs('input1.tsv')
+#    checkCorenamesForUsc()
+#    CheckForFwdFastqs('input1.tsv')
     createInput2file()
     sortAndJoin()
     cutColumns()
