@@ -32,7 +32,7 @@ import subprocess
 prev_run = os.path.isfile("samplesheet.txt") | os.path.isfile("input_1*.tsv") | os.path.isfile("input_2*.tsv") | os.path.isfile("joined.tsv") | os.path.isfile("samplesheet.tsv")
 
 if prev_run:
-    i = input('Intermediate files already exist. Delete them?\n')
+    i = input('Intermediate files or output already exists. Delete them and continue (y/n)?\n')
     if i.lower() == 'yes' or i.lower() == 'y':
         if os.path.isfile("samplesheet.txt"):
             process = subprocess.Popen(['rm', 'samplesheet.txt'])
@@ -52,12 +52,10 @@ if prev_run:
         
 
 
-#TODO: finish above
+#TODO: remove below checks
 
 # Define function to read in mod sample sheet and create new file (input1) from it, checking first if already exists in dir.
 def createInput1file(splsht3col):
-    if os.path.isfile('./input1.tsv'):
-        warnings.warn('input1 file already exists! Appending to existing file. If you do not want this, delete input1.tsv and run this script again.')
     with open(splsht3col, 'r') as csvfile:
         reader = csv.DictReader(csvfile, delimiter=',')
         for row in reader:
@@ -139,8 +137,6 @@ def CheckForFwdFastqs(sheet):
 
 # Define fcn to create input2 file.
 def createInput2file():
-    if os.path.isfile('./input2.tsv'):
-        warnings.warn('input2 file already exists! Appending to existing file. If you do not want this, delete input2.tsv and run this script again.')
     fastqfiles = glob.glob("*_R1_001.fastq")
     f2 = open('input2.tsv', 'w')
     for fastqfile in fastqfiles:
@@ -167,14 +163,11 @@ def sortAndJoin():
 
 # Define a function to cut the joined file, keeping only the wanted columns for samplesheet.
 def cutColumns():
-    if os.path.isfile('./samplesheet.tsv'):
-        warnings.warn('samplesheet.tsv file already exists! Appending to existing file. If you do not want this, delete samplesheet.tsv and run this script again.')
     for line in open('joined.tsv'):
         col2 = line.rstrip('\n').split()[1]
         col4 = line.rstrip('\n').split()[3]
         col5 = line.rstrip('\n').split()[4]
         print(col2 + "\t" + col4 + "\t" + col5, file=open("samplesheet.tsv","a"))
-
 
 
 # Define a fcn to replace raw fastq file endings with merged file endings, and write the final output file.
