@@ -16,6 +16,7 @@ parser.add_argument('ModifiedSampleSheetCsv_name', nargs=1, help="Give the name 
 parser.add_argument('Sample_name_colname', nargs='?', default="Sample_name", help="Name of the first column (sample names)")
 parser.add_argument('i5_TAG_Primer_colname', nargs='?', default="Fusion_COI_i5_TAG_Primer", help="Name of the second column (fwd primers)")
 parser.add_argument('i7_TAG_Primer_colname', nargs='?', default="Fusion_COI_i7_TAG_Primer", help="Name of the third column (reverse primers)")
+parser.add_argument('merge_status', nargs='?', default="merged", help="merged or forward")
 
 args = parser.parse_args()
 
@@ -163,7 +164,11 @@ def replaceEndingsAndWriteFinal():
     with open('samplesheet.tsv', 'rt') as spltsv:
         with open('samplesheet.txt', 'wt') as spltxt:
             for line in spltsv:
-                spltxt.write(line.replace('L001_R1_001.fastq','L001_merged.fq'))
+                if args.merge_status == 'merged':
+                    spltxt.write(line.replace('L001_R1_001.fastq','L001_merged.fq'))
+                else:
+                    spltxt.write(line)
+                    warnings.warn("Creating forward-only version of sheet.\n")
     print("File samplesheet.txt successfully created.")
     print("")
 
